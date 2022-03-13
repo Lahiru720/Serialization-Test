@@ -3,6 +3,7 @@ package online.lahiru.controller;
 import com.jfoenix.controls.JFXButton;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -13,9 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import online.lahiru.UserData;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -83,12 +82,24 @@ public class MainFormController {
                 Files.createFile(dataBase);
             }
 
-            loadAllCustomers();
+            loadUserdata();
 
         } catch (Exception e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Failed to initialize the database").showAndWait();
             Platform.exit();
+        }
+    }
+    private void loadUserdata() {
+        try (InputStream is = Files.newInputStream(dataBase, StandardOpenOption.READ);
+             ObjectInputStream ois = new ObjectInputStream(is)) {
+            tblView.getItems().clear();
+            tblView.setItems(FXCollections.observableArrayList((ArrayList<UserData>) ois.readObject()));
+        } catch (IOException | ClassNotFoundException e) {
+            if (!(e instanceof EOFException)) {
+                e.printStackTrace();
+                new Alert(Alert.AlertType.ERROR, "Failed to load customers").showAndWait();
+            }
         }
     }
     public void btnNew_OnAction(ActionEvent event) {
