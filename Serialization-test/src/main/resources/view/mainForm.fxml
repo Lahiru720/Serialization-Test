@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="online.lahiru.controller.MainFormController">
    <children>
       <AnchorPane prefHeight="400.0" prefWidth="600.0">
@@ -33,6 +32,7 @@
             </TableView>
             <JFXButton fx:id="btnNew" buttonType="RAISED" layoutX="483.0" layoutY="14.0" onAction="#btnNew_OnAction" prefHeight="26.0" prefWidth="102.0" style="-fx-background-color: #a2eef3;" text="+ NEW" />
             <Label layoutX="264.0" layoutY="19.0" />
+            <JFXButton fx:id="btnSave" buttonType="RAISED" layoutX="38.0" layoutY="14.0" onAction="#btnSave_OnAction" text="Save" />
          </children>
       </AnchorPane>
    </children>
