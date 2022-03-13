@@ -12,6 +12,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import online.lahiru.UserData;
 
 import java.io.*;
@@ -106,6 +107,13 @@ public class MainFormController {
     }
 
     public void btnBrowse_OnAction(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select an image");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("images", "*.jpg", "*.jpeg", ".png"));
+        File file = fileChooser.showOpenDialog(tblView.getScene().getWindow());
+        if (file != null) {
+            txtPicture.setText(file.getAbsolutePath());
+        }
     }
 
     public void btnSave_OnAction(ActionEvent event) {
