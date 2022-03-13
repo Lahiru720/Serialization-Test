@@ -134,7 +134,68 @@ public class MainFormController {
         }
     }
     public void btnSave_OnAction(ActionEvent event) {
-        
+        if (isValidated()){
+            if (btnSave.getText().equals("Save Customer")){
+                byte[] bytes;
+                try {
+                    Path path = Paths.get(txtPicture.getText());
+                    InputStream is = Files.newInputStream(path);
+                    bytes = new byte[is.available()];
+                    is.read(bytes);
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    new Alert(Alert.AlertType.ERROR, "Can not read the image file", ButtonType.OK).show();
+                    txtPicture.clear();
+                    txtPicture.requestFocus();
+                    return;
+                }
+
+                UserData newCustomer = new UserData(
+                        txtId.getText(),
+                        txtName.getText(),
+                        txtAddress.getText(), bytes);
+                tblView.getItems().add(newCustomer);
+
+                boolean result = saveData();
+
+                if (!result) {
+                    new Alert(Alert.AlertType.ERROR, "Failed to save the customer, try again").show();
+                    tblView.getItems().remove(newCustomer);
+                } else {
+                    clearItems();
+                }
+                txtId.requestFocus();
+            }else {
+                UserData cus = tblView.getItems().stream().filter(customer -> customer.getId().equals(txtId.getText())).findAny().orElse(null);
+                cus.setName(txtName.getText());
+                cus.setAddress(txtAddress.getText());
+                if (!txtPicture.getText().equals("[PICTURE]")){
+                    try {
+                        Path path = Paths.get(txtPicture.getText());
+                        InputStream is = Files.newInputStream(path);
+                        byte[] bytes = new byte[is.available()];
+                        is.read(bytes);
+                        is.close();
+                        cus.setBytes(bytes);
+                    } catch (IOException e) {
+                        new Alert(Alert.AlertType.ERROR,"Failed read the picture,try again!",ButtonType.OK).show();
+                        e.printStackTrace();
+                    }
+                }
+                boolean res = saveData();
+                if (!res){
+                    new Alert(Alert.AlertType.ERROR,"Something went wrong! Please try again.",ButtonType.OK).show();
+                    return;
+                }
+                new Alert(Alert.AlertType.CONFIRMATION,"Updated Successfully!",ButtonType.OK).show();
+                clearItems();
+                btnSave.setText("Save Customers");
+                tblView.refresh();
+                txtId.setEditable(true);
+                txtId.requestFocus();
+            }
+        }
 
 
     }
