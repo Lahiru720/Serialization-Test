@@ -54,6 +54,16 @@ public class MainFormController {
             imageView.setFitHeight(70);
             return new ReadOnlyObjectWrapper<>(imageView);
         });
+        tblView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                txtId.setText(newValue.getId());
+                txtId.setEditable(false);
+                txtName.setText(newValue.getName());
+                txtAddress.setText(newValue.getAddress());
+                txtPicture.setText("[set ur picture here !]");
+                btnSave.setText("Update");
+            }
+        });
     }
     private boolean saveData() {
         try (ObjectOutputStream oos = new ObjectOutputStream(Files.newOutputStream(dataBase, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING))) {
