@@ -1,8 +1,10 @@
 package online.lahiru.controller;
 
 import com.jfoenix.controls.JFXButton;
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.event.ActionEvent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -72,6 +74,21 @@ public class MainFormController {
         } catch (IOException e) {
             e.printStackTrace();
             return false;
+        }
+    }private void initDatabase() {
+        try {
+
+            if (!Files.exists(dataBase)) {
+                Files.createDirectories(dataBase.getParent());
+                Files.createFile(dataBase);
+            }
+
+            loadAllCustomers();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Failed to initialize the database").showAndWait();
+            Platform.exit();
         }
     }
     public void btnNew_OnAction(ActionEvent event) {
