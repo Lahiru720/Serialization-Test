@@ -5,10 +5,7 @@ import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -115,7 +112,28 @@ public class MainFormController {
             txtPicture.setText(file.getAbsolutePath());
         }
     }
-
+    public boolean isValidated(){
+        if (!txtId.getText().matches("C\\d{3}") ||
+                (tblView.getItems().stream().anyMatch(c -> c.getId().equalsIgnoreCase(txtId.getText())) && btnSave.getText().equals("Save UserData"))){
+            txtId.requestFocus();
+            txtId.selectAll();
+            return false;
+        } else if (txtName.getText().trim().isEmpty()) {
+            txtName.requestFocus();
+            txtName.selectAll();
+            return false;
+        } else if (txtAddress.getText().trim().isEmpty()) {
+            txtAddress.requestFocus();
+            txtAddress.selectAll();
+            return false;
+        } else if (txtPicture.getText().trim().isEmpty()) {
+            txtPicture.requestFocus();
+            return false;
+        }else {
+            return true;
+        }
+    }
     public void btnSave_OnAction(ActionEvent event) {
+      
     }
 }
