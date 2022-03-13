@@ -7,8 +7,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import online.lahiru.UserData;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.nio.file.Files;
@@ -41,6 +44,15 @@ public class MainFormController {
                 saveData();
             });
             return new ReadOnlyObjectWrapper<>(btnDelete);
+        });
+
+        TableColumn<UserData, ImageView> col = (TableColumn<UserData, ImageView>) tblView.getColumns().get(3);
+        col.setCellValueFactory(param -> {
+            ByteArrayInputStream is = new ByteArrayInputStream(param.getValue().getBytes());
+            ImageView imageView = new ImageView(new Image(is));
+            imageView.setFitWidth(70);
+            imageView.setFitHeight(70);
+            return new ReadOnlyObjectWrapper<>(imageView);
         });
     }
     private boolean saveData() {
