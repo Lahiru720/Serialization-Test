@@ -134,6 +134,14 @@ public class MainFormController {
         }
     }
     public void btnSave_OnAction(ActionEvent event) {
-      
+        
+
+
+    }
+    private void clearItems() {
+        txtId.clear();
+        txtName.clear();
+        txtAddress.clear();
+        txtPicture.clear();
     }
 }
